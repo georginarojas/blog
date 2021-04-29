@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>MyBlog</title>
@@ -19,17 +19,27 @@
     <div class="container" style="width:60%; padding-bottom:30px; padding-top: 50px">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb" style="background-color: white; padding-left: 0px; ">
-                <li class="breadcrumb-item active" aria-current="page">Home</li>
+                <li class="breadcrumb-item active" aria-current="page">Posts</li>
             </ol>
         </nav>
 
-        <div class="card shadow-sm bg-white rounded" style="margin-top: 20px;">
+        <div class="card shadow-sm bg-white rounded" style="margin-top: 20px;" th:each="post : ${posts}">
             <div class="card-body">
-                <p class="card-subtitle mb-2 text-muted" style="font-size: 0.8rem;"></p>
-                <a href="#">
-                    <h4 class="card-title" style="font-weight: bold; color: black; padding-top: 5px;"></h4>
+                <p class="card-subtitle mb-2 text-muted" style="font-size: 0.8rem;">
+                    <span th:text="${post.author}"></span>
+                    <span th:text="${post.date}"></span>
+                </p>
+
+<!--      th:href="${(#mvc.url('BC#getPostDetails').arg(0, post.id)).build()}"  or  th:href="@{/post/{id}(id = ${post.id}) }" working         -->
+<!--                <a th:href="${(#mvc.url('BC#getPostDetails').arg(0, post.id)).build()}" style="text-decoration: none;">-->
+                <a th:href="@{/post/{id}(id = ${post.id}) }" style="text-decoration: none;">
+                    <h4 class="card-title" style="font-weight: bold; color: black; padding-top: 5px;">
+                        <span th:text="${post.title}"></span>
+                    </h4>
                 </a>
-                <p class="card-text"></p>
+                <p class="card-text">
+                    <span th:utext="${#strings.abbreviate(post.text, 400)}"></span>
+                </p>
             </div>
         </div>
     </div>
